@@ -1,6 +1,6 @@
-import { getAllPosts } from '@/lib/serveractions'
-import Image from 'next/image'
-import ProfilePhoto from './shared/ProfilePhoto'
+import { getAllPosts } from '@/lib/serveractions';
+import Image from 'next/image';
+import ProfilePhoto from './shared/ProfilePhoto';
 
 const Sidebar = async ({ user }: { user: any }) => {
 
@@ -26,7 +26,7 @@ const Sidebar = async ({ user }: { user: any }) => {
                 </div>
                 <div className='border-b border-b-gray-300'>
                     <div className='p-2 mt-5 text-center'>
-                        <h1 className='font-bold hover:underline cursor-pointer'>{user ? `${user?.firstName} ${user?.lastName}` : "Patel Mern Stack"}</h1>
+                        <h1 className='font-bold hover:underline cursor-pointer'>{user ? `${user?.firstName} ${user?.lastName}` : "Teamify"}</h1>
                         <p className='text-xs'>@{user ? `${user?.username}` : 'username'}</p>
                     </div>
                 </div>

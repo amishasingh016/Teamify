@@ -93,8 +93,8 @@ export const createCommentAction = async (postId: string, formData: FormData) =>
         if (!postId) throw new Error("Post id required");
 
         const userDatabase: IUser = {
-            firstName: user.firstName || "Patel",
-            lastName: user.lastName || "Mern Stack",
+            firstName: user.firstName || "Teamify",
+            lastName: user.lastName || "Website",
             userId: user.id,
             profilePhoto: user.imageUrl
         }
