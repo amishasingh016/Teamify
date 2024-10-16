@@ -4,60 +4,64 @@ import {
     DialogContent,
     DialogFooter,
     DialogHeader,
-    DialogTitle
+    DialogTitle,
 } from "@/components/ui/dialog"
 import { createPostAction } from "@/lib/serveractions"
 import { readFileAsDataUrl } from "@/lib/utils"
 import { Images } from "lucide-react"
 import Image from "next/image"
 import { useRef, useState } from "react"
+import { toast } from "sonner"
 import ProfilePhoto from "./shared/ProfilePhoto"
 import { Textarea } from "./ui/textarea"
-
 
 export function PostDialog({ setOpen, open, src }: { setOpen: any, open: boolean, src: string }) {
     const inputRef = useRef<HTMLInputElement>(null);
     const [selectedFile, setSelectedFile] = useState<string>("");
-    const[inputText, setInputText]=useState<string>("");
+    const [inputText, setInputText] = useState<string>("");
 
-    const changeHandler =(e:any)=>{
+    const changeHandler = (e: any) => {
         setInputText(e.target.value);
     }
 
     const fileChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            const dataUrl = await readFileAsDataUrl(file)
+            const dataUrl = await readFileAsDataUrl(file);
             setSelectedFile(dataUrl);
         }
     }
-
-const postActionsHandler=async(formData:FormData)=>{
-    const inputText=formData.get('inputText') as string;
-    try{
-        await createPostAction(inputText,selectedFile);
-    }catch(error){
-        console.log('error occurred',error);
+    const postActionHandler = async (formData: FormData) => {
+        const inputText = formData.get('inputText') as string;
+        try {
+            await createPostAction(inputText, selectedFile);
+        } catch (error) {
+            console.log('error occurred', error);
+        }
+        setInputText("");
+        setOpen(false);
     }
-    setInputText("");
-    setOpen(false);
-}
 
     return (
         <Dialog open={open}>
-
             <DialogContent onInteractOutside={() => setOpen(false)} className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle className="flex gap-2">
                         <ProfilePhoto src={src} />
                         <div>
-                            <h1>Hackix</h1>
-                            <p className='text-xs'>Post to Anyone</p>
+                            <h1>Teamify</h1>
+                            <p className="text-xs">Post to anyone</p>
                         </div>
                     </DialogTitle>
-
                 </DialogHeader>
-                <form action={postActionsHandler}>
+                <form action={(formData) => {
+                    const promise = postActionHandler(formData);
+                    toast.promise(promise, {
+                        loading:'Creating post...',
+                        success:'Post created',
+                        error:'Failed to create post'
+                    })
+                }}>
                     <div className="flex flex-col">
                         <Textarea
                             id="name"
@@ -72,7 +76,7 @@ const postActionsHandler=async(formData:FormData)=>{
                                 selectedFile && (
                                     <Image
                                         src={selectedFile}
-                                        alt="Preview-image"
+                                        alt="preview-image"
                                         width={400}
                                         height={400}
                                     />
@@ -80,13 +84,11 @@ const postActionsHandler=async(formData:FormData)=>{
                             }
                         </div>
                     </div>
-
                     <DialogFooter>
                         <div className="flex items-center gap-4">
                             <input ref={inputRef} onChange={fileChangeHandler} type="file" name="image" className="hidden" accept="image/*" />
                             <Button type="submit">Post</Button>
                         </div>
-
                     </DialogFooter>
                 </form>
                 <Button className="gap-2" onClick={() => inputRef?.current?.click()} variant={'ghost'}>

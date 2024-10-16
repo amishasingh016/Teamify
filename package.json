@@ -20,10 +20,12 @@
     "lucide-react": "^0.427.0",
     "mongoose": "^8.6.1",
     "next": "^14.2.15",
+    "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
     "react-router-dom": "^6.26.0",
     "react-timeago": "^7.2.0",
+    "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
   },
